@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum Sentinel - Zero-Trust Access Control & PQC Demo</title>
+  <style>
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #222; 
+      padding: 20px; 
+      margin: 0;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .card { 
+      background: rgba(255, 255, 255, 0.95); 
+      border: 1px solid rgba(255, 255, 255, 0.3); 
+      padding: 20px; 
+      border-radius: 12px; 
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    .card h2 {
+      margin-top: 0;
+      color: #4a5568;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card h3 {
+      color: #2d3748;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+    label { 
+      display: block; 
+      margin: 12px 0; 
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+    label:hover {
+      background-color: rgba(66, 153, 225, 0.1);
+    }
+    input[type="checkbox"] {
+      margin-right: 8px;
+      transform: scale(1.2);
+    }
+    .status { 
+      margin-top: 20px; 
+      font-weight: bold; 
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    .status.granted {
+      background-color: #c6f6d5;
+      color: #22543d;
+      border: 2px solid #48bb78;
+    }
+    .status.denied {
+      background-color: #fed7d7;
+      color: #742a2a;
+      border: 2px solid #e53e3e;
+    }
+    .policy-box {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    .policy-box strong {
+      color: #2d3748;
+    }
+    .policy-box ul {
+      margin: 8px 0;
+      padding-left: 20px;
+    }
+    .crypto-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e2e8f0;
+    }
+    .crypto-test {
+      background: #edf2f7;
+      border: 1px solid #cbd5e0;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+    .crypto-result {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #1a202c;
+      color: #68d391;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 8px 0;
+      overflow-x: auto;
+    }
+    .success { color: #48bb78; }
+    .error { color: #e53e3e; }
+    .warning { color: #ed8936; }
+    button {
+      background: #4299e1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background: #3182ce;
+    }
+    button:disabled {
+      background: #a0aec0;
+      cursor: not-allowed;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      grid-column: 1 / -1;
+    }
+    .header h1 {
+      color: white;
+      font-size: 2.5em;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .header p {
+      color: rgba(255,255,255,0.9);
+      font-size: 1.1em;
+      margin: 10px 0;
+    }
+    .icon {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🛡️ Quantum Sentinel</h1>
+      <p>Zero-Trust Access Control & Post-Quantum Cryptography Demo</p>
+    </div>
+
+    <!-- Zero-Trust Access Control -->
+    <div class="card">
+      <h2>🔐 Zero-Trust Access Control</h2>
+      <p>
+        Access control is enforced based on attributes, not identity. Resources are encrypted using 
+        <strong>Attribute-Based Encryption (ABE)</strong>.
+      </p>
+
+      <div class="policy-box">
+        <strong>Current Access Policy:</strong>
+        <ul>
+          <li>Role: Admin</li>
+          <li>Department: Cybersecurity</li>
+        </ul>
+        <em>Both attributes required for access</em>
+      </div>
+
+      <div>
+        <h3>User Attributes</h3>
+        <label>
+          <input type="checkbox" id="roleAdmin"> 
+          <span>🎭 Role: Admin</span>
+        </label>
+        <label>
+          <input type="checkbox" id="deptCyber"> 
+          <span>🏢 Department: Cybersecurity</span>
+        </label>
+        <div class="status denied" id="accessStatus">🚫 Access Denied</div>
+      </div>
+
+      <div style="margin-top: 20px; padding: 10px; background: #f0f8ff; border-radius: 8px; font-size: 14px;">
+        <strong>How it works:</strong> This demonstrates Zero-Trust security where no one is trusted by default. 
+        Access is granted only when specific attributes are verified in real-time.
+      </div>
+    </div>
+
+    <!-- Post-Quantum Cryptography -->
+    <div class="card">
+      <h2>🔮 Post-Quantum Cryptography</h2>
+      <p>
+        Demonstration of <strong>CRYSTALS-Kyber</strong> (Key Encapsulation) and 
+        <strong>CRYSTALS-Dilithium</strong> (Digital Signatures) - quantum-resistant algorithms.
+      </p>
+
+      <div class="crypto-section">
+        <h3>🔑 CRYSTALS-Kyber KEM</h3>
+        <div class="crypto-test">
+          <button onclick="testKyber()" id="kyberBtn">Test Kyber Key Exchange</button>
+          <div id="kyberResult" class="crypto-result" style="display: none;"></div>
+        </div>
+
+        <h3>✍️ CRYSTALS-Dilithium Signature</h3>
+        <div class="crypto-test">
+          <button onclick="testDilithium()" id="dilithiumBtn">Test Dilithium Signature</button>
+          <div id="dilithiumResult" class="crypto-result" style="display: none;"></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; padding: 10px; background: #fff8e1; border-radius: 8px; font-size: 14px;">
+        <strong>Note:</strong> This simulates post-quantum cryptography concepts. In production, 
+        you would use actual implementations like <code>liboqs</code> or other certified libraries.
+      </div>
+    </div>
+
+    <!-- GAN Threat Simulation -->
+    <div class="card" style="grid-column: 1 / -1;">
+      <h2>🤖 GAN-Based Threat Simulation</h2>
+      <p>
+        Generate adversarial attack patterns using <strong>Generative Adversarial Networks (GANs)</strong> 
+        to test defenses before real attacks occur.
+      </p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+        <div>
+          <h3>🎯 Attack Pattern Generation</h3>
+          <button onclick="generateThreat()" id="threatBtn">Generate Fake Threat</button>
+          <div id="threatResult" style="margin-top: 15px; display: none;"></div>
+        </div>
+        
+        <div>
+          <h3>🔍 Threat Detection</h3>
+          <button onclick="detectThreat()" id="detectBtn" disabled>Analyze Threat</button>
+          <div id="detectionResult" style="margin-top: 15px; display: none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Zero-Trust Access Control
+    const roleCheckbox = document.getElementById('roleAdmin');
+    const deptCheckbox = document.getElementById('deptCyber');
+    const status = document.getElementById('accessStatus');
+
+    function evaluateAccess() {
+      const hasRole = roleCheckbox.checked;
+      const hasDept = deptCheckbox.checked;
+      
+      if (hasRole && hasDept) {
+        status.textContent = "✅ Access Granted";
+        status.className = "status granted";
+      } else {
+        status.textContent = "🚫 Access Denied";
+        status.className = "status denied";
+      }
+    }
+
+    roleCheckbox.addEventListener('change', evaluateAccess);
+    deptCheckbox.addEventListener('change', evaluateAccess);
+
+    // Post-Quantum Cryptography Simulation
+    function generateRandomHex(length) {
+      return Array.from({ length }, () => 
+        Math.floor(Math.random() * 16).toString(16)
+      ).join('');
+    }
+
+    function testKyber() {
+      const btn = document.getElementById('kyberBtn');
+      const result = document.getElementById('kyberResult');
+      
+      btn.textContent = 'Testing Kyber...';
+      btn.disabled = true;
+      result.style.display = 'none';
+      
+      setTimeout(() => {
+        // Simulate Kyber KEM
+        const publicKey = generateRandomHex(800);
+        const privateKey = generateRandomHex(1632);
+        const ciphertext = generateRandomHex(768);
+        const sharedSecret = generateRandomHex(32);
+        
+        result.innerHTML = `
+          <div class="success">✅ CRYSTALS-Kyber KEM Test: SUCCESS</div>
+          <div>Algorithm: Kyber-512</div>
+          <div>Public Key: ${publicKey.substring(0, 32)}...</div>
+          <div>Shared Secret: ${sharedSecret}</div>
+          <div>Shared Secret Match: <span class="success">YES</span></div>
+        `;
+        
+        result.style.display = 'block';
+        btn.textContent = 'Test Kyber Key Exchange';
+        btn.disabled = false;
+      }, 1500);
+    }
+
+    function testDilithium() {
+      const btn = document.getElementById('dilithiumBtn');
+      const result = document.getElementById('dilithiumResult');
+      
+      btn.textContent = 'Testing Dilithium...';
+      btn.disabled = true;
+      result.style.display = 'none';
+      
+      setTimeout(() => {
+        // Simulate Dilithium Digital Signature
+        const publicKey = generateRandomHex(1312);
+        const privateKey = generateRandomHex(2528);
+        const message = "Protect the environment!";
+        const signature = generateRandomHex(2420);
+        const verified = Math.random() > 0.1; // 90% success rate
+        
+        result.innerHTML = `
+          <div class="${verified ? 'success' : 'error'}">
+            ${verified ? '✅' : '❌'} CRYSTALS-Dilithium Signature Test: ${verified ? 'VERIFIED' : 'FAILED'}
+          </div>
+          <div>Algorithm: Dilithium-2</div>
+          <div>Message: "${message}"</div>
+          <div>Signature: ${signature.substring(0, 32)}...</div>
+          <div>Verification: <span class="${verified ? 'success' : 'error'}">${verified ? 'YES' : 'NO'}</span></div>
+        `;
+        
+        result.style.display = 'block';
+        btn.textContent = 'Test Dilithium Signature';
+        btn.disabled = false;
+      }, 1500);
+    }
+
+    // GAN Threat Simulation
+    const threatPatterns = [
+      { type: 'Magecart', description: 'JavaScript skimmer injection targeting payment forms' },
+      { type: 'Grinch Bot', description: 'Automated purchase bot disrupting e-commerce during peak seasons' },
+      { type: 'Supply Chain', description: 'Compromised dependency injection in CI/CD pipeline' },
+      { type: 'Zero-Day', description: 'Novel exploit targeting unknown vulnerability in web framework' }
+    ];
+
+    let currentThreat = null;
+
+    function generateThreat() {
+      const btn = document.getElementById('threatBtn');
+      const result = document.getElementById('threatResult');
+      const detectBtn = document.getElementById('detectBtn');
+      
+      btn.textContent = 'Generating Threat...';
+      btn.disabled = true;
+      result.style.display = 'none';
+      detectBtn.disabled = true;
+      
+      setTimeout(() => {
+        // Simulate GAN threat generation
+        currentThreat = threatPatterns[Math.floor(Math.random() * threatPatterns.length)];
+        
+        const indicators = [
+          'Unusual outbound traffic to IP 192.168.1.100',
+          'POST requests with obfuscated JavaScript payloads',
+          'Suspicious DOM manipulation patterns',
+          'Anomalous network timing signatures'
+        ];
+        
+        result.innerHTML = `
+          <div style="background: #2d3748; color: #e2e8f0; padding: 15px; border-radius: 8px;">
+            <div class="warning">⚠️ Generated Threat Pattern</div>
+            <div><strong>Type:</strong> ${currentThreat.type}</div>
+            <div><strong>Description:</strong> ${currentThreat.description}</div>
+            <div><strong>Threat Level:</strong> ${Math.floor(Math.random() * 5) + 5}/10</div>
+            <div><strong>Indicators:</strong></div>
+            <ul>
+              ${indicators.slice(0, Math.floor(Math.random() * 3) + 2).map(i => `<li>${i}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+        
+        result.style.display = 'block';
+        btn.textContent = 'Generate Fake Threat';
+        btn.disabled = false;
+        detectBtn.disabled = false;
+      }, 2000);
+    }
+
+    function detectThreat() {
+      const btn = document.getElementById('detectBtn');
+      const result = document.getElementById('detectionResult');
+      
+      btn.textContent = 'Analyzing...';
+      btn.disabled = true;
+      result.style.display = 'none';
+      
+      setTimeout(() => {
+        const confidence = Math.floor(Math.random() * 30) + 70; // 70-100% confidence
+        const isReal = Math.random() > 0.3; // 70% chance it's detected as synthetic
+        
+        result.innerHTML = `
+          <div style="background: #2d3748; color: #e2e8f0; padding: 15px; border-radius: 8px;">
+            <div class="${isReal ? 'error' : 'success'}">
+              ${isReal ? '🚨 REAL THREAT DETECTED' : '🤖 SYNTHETIC THREAT DETECTED'}
+            </div>
+            <div><strong>Confidence:</strong> ${confidence}%</div>
+            <div><strong>Analysis:</strong> ${isReal ? 'Genuine attack pattern' : 'AI-generated test pattern'}</div>
+            <div><strong>Recommendation:</strong> ${isReal ? 'Immediate response required' : 'Defense system tested successfully'}</div>
+          </div>
+        `;
+        
+        result.style.display = 'block';
+        btn.textContent = 'Analyze Threat';
+        btn.disabled = false;
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
