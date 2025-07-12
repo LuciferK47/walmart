@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 80% 98%; /* Lighter, cleaner gray */
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221 83% 53%; /* #2962FF */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 222 47% 90%; /* Softer secondary */
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 222 47% 95%; /* Adjusted muted */
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 35 100% 50%; /* #FF9100 */
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 47% 88%; /* Softer border */
+    --input: 222 47% 92%;
+    --ring: 221 83% 53%;
+
+    --radius: 0.75rem; /* Slightly more rounded */
+
+    --chart-1: 221 83% 53%;
+    --chart-2: 160 70% 45%;
+    --chart-3: 35 100% 50%;
+    --chart-4: 280 85% 60%;
+    --chart-5: 0 84% 60%;
+  }
+
+  .dark {
+    --background: 222 47% 10%; /* Darker bg */
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 12%; /* Slightly lighter card bg */
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 221 83% 63%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 217.2 32.6% 20%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 35 100% 60%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 25%;
+    --input: 217.2 32.6% 22%;
+    --ring: 221 83% 63%;
+    
+    --chart-1: 221 83% 63%;
+    --chart-2: 160 70% 55%;
+    --chart-3: 35 100% 60%;
+    --chart-4: 280 85% 70%;
+    --chart-5: 0 74% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+    background-image: radial-gradient(circle at 1px 1px, hsl(var(--border)) 1px, transparent 0);
+    background-size: 2rem 2rem;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline;
+  }
+}
