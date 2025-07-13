@@ -9,7 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {z} from 'zod';
 
 const GenerateNetworkDataInputSchema = z.object({
   attackType: z.string().describe('The type of attack to simulate (e.g., "DDoS", "Data Exfiltration").'),
