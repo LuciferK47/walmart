@@ -797,7 +797,28 @@ npm start
 ### Common Issues
 
 #### 1. Module Not Found Errors
+
+**Common Issues with Missing Dependencies:**
+
+If you encounter module resolution errors for missing packages:
+
 ```bash
+# For next-themes error
+npm install next-themes
+
+# For react-hook-form related errors
+npm install react-hook-form @hookform/resolvers
+
+# For missing Radix UI components
+npm install @radix-ui/react-avatar @radix-ui/react-progress
+
+# For Genkit AI framework errors
+npm install @genkit-ai/core @genkit-ai/ai @genkit-ai/googleai
+
+# Install all missing dependencies at once
+npm install next-themes react-hook-form @hookform/resolvers @radix-ui/react-avatar @radix-ui/react-progress @genkit-ai/core @genkit-ai/ai @genkit-ai/googleai
+
+# Or if general module issues persist:
 # Clear node_modules and reinstall
 rm -rf node_modules package-lock.json
 npm install
