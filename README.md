@@ -192,6 +192,23 @@ cd quantum-sentinel
 npm install
 ```
 
+#### Step 5: Set Up Environment Variables
+```powershell
+# Copy environment template
+copy .env.example .env
+
+# Edit .env file and add your Google AI API key
+notepad .env
+```
+
+#### Step 6: Run the Application
+```powershell
+# Start development server
+npm run dev
+
+# The application will be available at http://localhost:3000
+```
+
 ### Linux Setup
 
 #### Step 1: Install Node.js (Ubuntu/Debian)
@@ -199,14 +216,11 @@ npm install
 # Update package index
 sudo apt update
 
-# Install Node.js and npm
-sudo apt install nodejs npm
-
-# Or install latest version using NodeSource
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+# Install Node.js and npm (latest LTS version)
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
-# Verify installation
+# Verify installation (should be Node 18+ and npm 9+)
 node --version
 npm --version
 ```
@@ -234,6 +248,25 @@ cd quantum-sentinel
 npm install
 ```
 
+#### Step 5: Set Up Environment Variables
+```bash
+# Copy environment template
+cp .env.example .env
+
+# Edit .env file and add your Google AI API key
+nano .env
+# or
+vim .env
+```
+
+#### Step 6: Run the Application
+```bash
+# Start development server
+npm run dev
+
+# The application will be available at http://localhost:3000
+```
+
 ### macOS Setup
 
 #### Step 1: Install Homebrew (if not installed)
@@ -243,13 +276,13 @@ npm install
 
 #### Step 2: Install Node.js and Git
 ```bash
-# Install Node.js
+# Install Node.js (latest LTS version)
 brew install node
 
 # Install Git (usually pre-installed)
 brew install git
 
-# Verify installations
+# Verify installations (should be Node 18+ and npm 9+)
 node --version
 npm --version
 git --version
@@ -266,25 +299,53 @@ cd quantum-sentinel
 npm install
 ```
 
+#### Step 5: Set Up Environment Variables
+```bash
+# Copy environment template
+cp .env.example .env
+
+# Edit .env file and add your Google AI API key
+nano .env
+# or
+vim .env
+```
+
+#### Step 6: Run the Application
+```bash
+# Start development server
+npm run dev
+
+# The application will be available at http://localhost:3000
+```
+
 ### Environment Configuration
 
-1. **Create Environment File**:
-   ```bash
-   # Create .env file in project root
-   touch .env  # Linux/macOS
-   # or
-   echo. > .env  # Windows
-   ```
-
-2. **Add Google AI API Key**:
+1. **Required Environment Variables**:
    ```env
+   # Google AI API Key (required for AI features)
    GOOGLE_API_KEY=your_google_ai_api_key_here
+   
+   # Next.js Environment
+   NEXT_PUBLIC_APP_ENV=development
+   
+   # Optional: Custom API endpoints
+   NEXT_PUBLIC_API_URL=http://localhost:3000/api
    ```
 
-3. **Get Google AI API Key**:
+2. **Get Google AI API Key**:
    - Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
    - Click "Create API key"
    - Copy the generated key to your `.env` file
+
+3. **Environment File Setup**:
+   ```bash
+   # Copy the example file
+   cp .env.example .env
+   
+   # Edit with your preferred editor
+   nano .env  # Linux/macOS
+   notepad .env  # Windows
+   ```
 
 ## 💻 VS Code Development
 
@@ -349,9 +410,33 @@ Create `.vscode/tasks.json`:
       }
     },
     {
-      "label": "Start Genkit Server",
+      "label": "Build for Production",
       "type": "shell",
-      "command": "npm run genkit:watch",
+      "command": "npm run build",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Type Check",
+      "type": "shell",
+      "command": "npm run type-check",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Lint Code",
+      "type": "shell",
+      "command": "npm run lint",
       "group": "build",
       "presentation": {
         "echo": true,
@@ -402,39 +487,159 @@ code .
 
 ## 🏃‍♂️ Running the Application
 
-### Method 1: Using npm scripts (Recommended)
+### Quick Start (All OS)
 
-#### Terminal 1: Start Next.js Development Server
+After completing the installation steps for your operating system:
+
+1. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+
+2. **Access the application**:
+   - **Main Application**: http://localhost:3000
+   - **Zero-Trust Demo**: Open `demo/zero-trust-access-control.html` in your browser
+
+### Available Scripts
+
+- `npm run dev` - Start development server (http://localhost:3000)
+- `npm run build` - Build the application for production
+- `npm run start` - Start production server (run `npm run build` first)
+- `npm run lint` - Run ESLint to check code quality
+- `npm run type-check` - Run TypeScript type checking
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check if code is properly formatted
+
+### Development Methods
+
+#### Method 1: Terminal (Recommended)
 ```bash
+# Navigate to project directory
+cd quantum-sentinel
+
+# Start development server
 npm run dev
+
+# Open http://localhost:3000 in your browser
 ```
-This starts the frontend at `http://localhost:9002`
 
-#### Terminal 2: Start Genkit AI Server
-```bash
-npm run genkit:watch
-```
-This starts the AI server for threat simulation and other AI features
+#### Method 2: VS Code Integrated Terminal
+1. **Open VS Code**: `code .` in project directory
+2. **Open Terminal**: `Ctrl+`` (Windows/Linux) or `Cmd+`` (macOS)
+3. **Run**: `npm run dev`
 
-### Method 2: Using VS Code Tasks
-
+#### Method 3: VS Code Tasks
 1. **Open Command Palette**: `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS)
 2. **Type**: "Tasks: Run Task"
-3. **Select**: "Start Development Server" or "Start Genkit Server"
+3. **Select**: "Start Development Server"
 
-### Method 3: Using VS Code Terminal
+### Accessing Different Features
 
-1. **Open Terminal**: `Ctrl+`` (Windows/Linux) or `Cmd+`` (macOS)
-2. **Split Terminal**: Click the split terminal button
-3. **Run both commands** in separate terminal panels
-
-### Accessing the Application
-
-- **Main Application**: http://localhost:9002
+- **Main Dashboard**: http://localhost:3000
 - **Zero-Trust Demo**: Open `demo/zero-trust-access-control.html` in browser
-- **Genkit Developer UI**: http://localhost:4000 (when Genkit server is running)
+- **API Routes**: http://localhost:3000/api/*
 
-## 📁 Project Structure
+### Stopping the Application
+
+- **In Terminal**: Press `Ctrl+C` (Windows/Linux) or `Cmd+C` (macOS)
+- **In VS Code**: Click the trash icon in the terminal or press `Ctrl+C`
+
+## � Troubleshooting
+
+### Common Issues and Solutions
+
+#### 1. npm Error: Could not read package.json
+**Error**: `npm error code ENOENT... Could not read package.json`
+**Solution**: Ensure you're in the project root directory where `package.json` exists.
+```bash
+cd quantum-sentinel
+ls -la  # Should show package.json
+npm install
+```
+
+#### 2. Node.js Version Issues
+**Error**: `Error: Node.js version not supported`
+**Solution**: Update to Node.js 18 or higher:
+```bash
+# Check current version
+node --version
+
+# Update using nvm (recommended)
+nvm install --lts
+nvm use --lts
+
+# Or download from nodejs.org
+```
+
+#### 3. Permission Errors (Linux/macOS)
+**Error**: `EACCES: permission denied`
+**Solution**: 
+```bash
+# Fix npm permissions
+sudo chown -R $(whoami) ~/.npm
+
+# Or use npm with --unsafe-perm
+npm install --unsafe-perm
+```
+
+#### 4. Port Already in Use
+**Error**: `Port 3000 is already in use`
+**Solution**:
+```bash
+# Kill process using port 3000
+lsof -ti:3000 | xargs kill -9  # Linux/macOS
+netstat -ano | findstr :3000  # Windows (then kill process)
+
+# Or use different port
+npm run dev -- --port 3001
+```
+
+#### 5. Google AI API Key Issues
+**Error**: `Google AI API key not found`
+**Solution**:
+1. Check if `.env` file exists in project root
+2. Ensure `GOOGLE_API_KEY` is set in `.env`
+3. Restart the development server after adding the key
+
+#### 6. TypeScript Errors
+**Error**: Various TypeScript compilation errors
+**Solution**:
+```bash
+# Check TypeScript configuration
+npm run type-check
+
+# Clear Next.js cache
+rm -rf .next
+
+# Reinstall dependencies
+rm -rf node_modules package-lock.json
+npm install
+```
+
+#### 7. ESLint/Prettier Conflicts
+**Error**: Code formatting issues
+**Solution**:
+```bash
+# Fix ESLint issues
+npm run lint
+
+# Format code
+npm run format
+
+# Check formatting
+npm run format:check
+```
+
+### Getting Help
+
+If you encounter issues not covered here:
+
+1. **Check the logs**: Look for detailed error messages in the terminal
+2. **Clear cache**: Delete `node_modules`, `.next`, and `package-lock.json`, then reinstall
+3. **Check Node.js version**: Ensure you're using Node.js 18.17.0 or higher
+4. **Verify environment**: Make sure all required environment variables are set
+
+## �📁 Project Structure
 
 ```
 quantum-sentinel/
