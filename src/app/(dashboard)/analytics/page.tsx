@@ -1,4 +1,4 @@
-import { LineChart, BarChart, PieChart, Activity, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Activity, ShieldCheck, AlertTriangle } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -11,7 +11,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { Bar, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend, Pie, Cell } from "recharts";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend, Pie, PieChart, Cell } from "recharts";
 
 const networkTrafficData = Array.from({ length: 30 }, (_, i) => ({
   date: `2023-11-${String(i + 1).padStart(2, '0')}`,
