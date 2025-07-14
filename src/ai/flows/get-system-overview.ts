@@ -9,6 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import {withRetry} from '@/ai/utils';
 import {z} from 'zod';
 
 const GetSystemOverviewOutputSchema = z.object({
@@ -46,7 +47,9 @@ const getSystemOverviewFlow = ai.defineFlow(
     outputSchema: GetSystemOverviewOutputSchema,
   },
   async () => {
-    const {output} = await prompt();
+    const {output} = await withRetry(async () => {
+      return await prompt();
+    });
     return output!;
   }
 );

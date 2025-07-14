@@ -9,6 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import {withRetry} from '@/ai/utils';
 import {z} from 'zod';
 
 const GenerateNetworkDataInputSchema = z.object({
@@ -51,7 +52,9 @@ const generateNetworkDataFlow = ai.defineFlow(
     outputSchema: GenerateNetworkDataOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
+    const {output} = await withRetry(async () => {
+      return await prompt(input);
+    });
     return output!;
   }
 );
