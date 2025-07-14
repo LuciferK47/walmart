@@ -1,4 +1,4 @@
-import { AlertTriangle, Shield, Target, Server, Code, Bot, ListChecks, Lock } from "lucide-react";
+import { AlertTriangle, Target, Code, Bot, ListChecks } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export interface AttackPattern {

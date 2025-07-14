@@ -155,7 +155,7 @@ export default function AnalyticsPage() {
                             cy="50%"
                             outerRadius={100}
                             labelLine={false}
-                            label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+                            label={({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
                                 const RADIAN = Math.PI / 180;
                                 const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
                                 const x = cx + radius * Math.cos(-midAngle * RADIAN);
