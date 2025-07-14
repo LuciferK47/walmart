@@ -1,12 +1,9 @@
 import Link from "next/link"
+import Image from "next/image"
 import {
-  Bell,
   Home,
   LineChart,
-  Package,
   Package2,
-  ShoppingCart,
-  Users,
   Search,
   Shield,
   Bot,
@@ -15,13 +12,6 @@ import {
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -141,7 +131,7 @@ export default function DashboardLayout({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
-                <img
+                <Image
                   src="https://placehold.co/36x36.png"
                   width={36}
                   height={36}

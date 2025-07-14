@@ -23,7 +23,7 @@ function simulateKyberKEM() {
   return { publicKey, sharedSecret, success: true };
 }
 
-function simulateDilithiumSig(message: string) {
+function simulateDilithiumSig() {
   const signature = Array.from({ length: 30 }, () => 
     Math.floor(Math.random() * 256).toString(16).padStart(2, '0')
   ).join('');
@@ -31,9 +31,20 @@ function simulateDilithiumSig(message: string) {
   return { signature, verified: Math.random() > 0.1 };
 }
 
+interface KyberResult {
+  publicKey: string;
+  sharedSecret: string;
+  success: boolean;
+}
+
+interface DilithiumResult {
+  signature: string;
+  verified: boolean;
+}
+
 export function QuantumStatusCard() {
-  const [kyberResult, setKyberResult] = useState<any>(null);
-  const [dilithiumResult, setDilithiumResult] = useState<any>(null);
+  const [kyberResult, setKyberResult] = useState<KyberResult | null>(null);
+  const [dilithiumResult, setDilithiumResult] = useState<DilithiumResult | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   
   const runCryptoTest = async () => {
@@ -43,7 +54,7 @@ export function QuantumStatusCard() {
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     const kyber = simulateKyberKEM();
-    const dilithium = simulateDilithiumSig("Test message");
+    const dilithium = simulateDilithiumSig();
     
     setKyberResult(kyber);
     setDilithiumResult(dilithium);
