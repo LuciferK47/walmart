@@ -46,7 +46,9 @@ const getSystemOverviewFlow = ai.defineFlow(
     outputSchema: GetSystemOverviewOutputSchema,
   },
   async () => {
-    const {output} = await prompt();
+    const {output} = await prompt({
+      model: 'googleai/gemini-1.5-flash'
+    });
     return output!;
   }
 );
