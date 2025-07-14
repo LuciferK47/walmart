@@ -25,10 +25,8 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "@genkit-ai/ai": "^0.5.17",
-    "@genkit-ai/core": "^0.5.17",
-    "@genkit-ai/googleai": "^0.5.17",
-    "@google/generative-ai": "^0.2.0",
+    "@genkit-ai/googleai": "^1.14.1",
+    "@google/generative-ai": "^0.21.0",
     "@hookform/resolvers": "^3.3.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
