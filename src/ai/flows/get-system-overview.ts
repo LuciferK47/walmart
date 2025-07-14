@@ -46,7 +46,32 @@ const getSystemOverviewFlow = ai.defineFlow(
     outputSchema: GetSystemOverviewOutputSchema,
   },
   async () => {
-    const {output} = await prompt();
-    return output!;
+    // Retry the prompt a few times in case the Google Generative AI endpoint is temporarily overloaded (e.g., returns 503).
+    const maxRetries = 3;
+    const baseDelayMs = 500; // initial back-off delay
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const {output} = await prompt();
+        return output!;
+      } catch (err) {
+        const isLastAttempt = attempt === maxRetries;
+
+        // Re-throw immediately if we've exhausted retries or if it's not a 5xx error.
+        const message = (err as Error).message ?? '';
+        const isServerOverload = message.includes('503');
+
+        if (isLastAttempt || !isServerOverload) {
+          throw err;
+        }
+
+        // Exponential back-off before retrying.
+        const delay = baseDelayMs * 2 ** (attempt - 1);
+        await new Promise((res) => setTimeout(res, delay));
+      }
+    }
+
+    // Fallback (should never reach here because we either returned or threw).
+    throw new Error('Unable to fetch system overview after retries');
   }
 );
