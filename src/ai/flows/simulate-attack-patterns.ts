@@ -9,6 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import {withRetry} from '@/ai/utils';
 import {z} from 'zod';
 
 const SimulateAttackPatternsInputSchema = z.object({
@@ -72,7 +73,9 @@ const simulateAttackPatternsFlow = ai.defineFlow(
     outputSchema: SimulateAttackPatternsOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
+    const {output} = await withRetry(async () => {
+      return await prompt(input);
+    });
     return output!;
   }
 );
